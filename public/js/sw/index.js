@@ -69,7 +69,7 @@ function serveAvatar(request) {
   // This means you only store one copy of each avatar.
   var storageUrl = request.url.replace(/-\dx\.jpg$/, '');
 
-  
+
   //
   // Note that this is slightly different to servePhoto!
   return caches.open(contentImgsCache).then(function(cache) {
@@ -78,17 +78,10 @@ function serveAvatar(request) {
         cache.put(storageUrl, networkResponse.clone());
         return networkResponse;
       });
-      return response || networkResponse;
+      return response || networkFetch;
     });
   });
 
-}
-
-function gotoNewtworkAndUpdateCache(request, cache, storageUrl) {
-  return fetch(request).then(function(networkResponse) {
-    cache.put(storageUrl, networkResponse.clone());
-    return networkResponse;
-  });
 }
 
 function servePhoto(request) {
@@ -106,6 +99,7 @@ function servePhoto(request) {
   });
 }
 
+// when recieve msg from IndexController.js
 self.addEventListener('message', function(event) {
   if (event.data.action === 'skipWaiting') {
     self.skipWaiting();
