@@ -28,6 +28,7 @@ export default function IndexController(container) {
 
   var indexController = this;
 
+  // clear ImageCache every 5 min
   setInterval(function() {
     indexController._cleanImageCache();
   }, 1000 * 60 * 5);
